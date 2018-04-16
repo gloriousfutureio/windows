@@ -41,6 +41,20 @@ auto_mkindex /some/lib *.tcl
 
 Our build script can do this for us.
 
+## Interactive commands
+
+Try these fascinating commands at the `tclsh` command line
+
+```
+info tclversion
+info commands
+```
+
+## Nicer shell
+
+The default `tclsh` and `wish` are super stripped down, and don't even provide
+command history. To achive this, clone and compile `rlwrap`, and invoke
+like `rlwrap tclsh`
 
 
 

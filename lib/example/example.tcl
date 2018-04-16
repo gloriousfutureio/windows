@@ -1,4 +1,5 @@
 
-package provide example 0.1
+package provide example 1.0
 
 proc ejemplo {} {}
+

@@ -1,4 +1,11 @@
-#!/usr/bin/env wish
+#!/usr/bin/env tclsh 
+
+package require Tk
+
+# find our libraries in ../lib  ???
+lappend auto_path [file join [file dirname [info script]] "../lib/example" ]
+
+package require example 1.0
 
 # A simple view that executes a command and logs the output
 # TODO: make sure we don't pass empty commands. Empty args are ok.
