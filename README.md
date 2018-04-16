@@ -10,7 +10,7 @@ program in bin can inlude the following line to locate libraries in lib.
 
 ```tcl
 lappend auto_path \
-    [file join [file dirname [info script]] ../lib]
+    [file join [file dirname [info script]] ../lib/foolib]
 ```
 
 `auto_path` is a global runtime variable, a list of directories. Each is 
@@ -32,11 +32,11 @@ package require foo 2.1
 ```
 
 Unfortunately, existing on the `auto_path` is not enough for packages to be 
-found by require. A **tclIndex.tcl** file must be built by running a special
+found by require. A **pkgIndex.tcl** file must be built by running a special
 indexing command in Tcl.
 
 ```tcl
-auto_mkindex /some/lib *.tcl
+pkg_mkIndex /some/lib *.tcl
 ```
 
 Our build script can do this for us.

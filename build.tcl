@@ -10,7 +10,7 @@ proc Libraries {libs} {
 
 proc UpdateIndex {dir} {
     # From: Practical Progamming in Tcl and TK; Welch, Jones, Hobbs (2003)
-    set index [file join $dir tclIndex]
+    set index [file join $dir pkgIndex.tcl]
     if {![file exists $index]} {
         set doit 1
     } else {
@@ -30,7 +30,7 @@ proc UpdateIndex {dir} {
     }
     if { $doit } {
         # Rebuild the tclIndex 
-        auto_mkindex $dir *.tcl
+        pkg_mkIndex $dir *.tcl
     }
 }
 

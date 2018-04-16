@@ -2,6 +2,8 @@
 
 package require Tk
 
+puts [file join [file dirname [info script]] "../lib/example" ]
+
 # find our libraries in ../lib  ???
 lappend auto_path [file join [file dirname [info script]] "../lib/example" ]
 
