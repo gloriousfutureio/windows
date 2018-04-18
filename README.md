@@ -52,8 +52,18 @@ info commands
 ## Nicer shell
 
 The default `tclsh` and `wish` are super stripped down, and don't even provide
-command history. To become a cool person, clone and compile `rlwrap`, and invoke
-your shells like `rlwrap tclsh`
+command history. To become a cool person, install `tclreadline`, and 
+add the following to `~/.tclshrc`
+
+```tcl
+package require tclreadline
+
+proc ::tclreadline::prompt1 {} {
+    return "[lindex [split [info hostname] "."] 0] [lindex [split [pwd] "/"] end] % "
+}
+
+::tclreadline::Loop
+```
 
 
 ## Getting more sweet packages
