@@ -1,6 +1,6 @@
 # windows
 
-What if... shell... was good?
+Tcl/Tk experiments.
 
 ## Conventions
 

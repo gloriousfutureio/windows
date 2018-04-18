@@ -1,4 +1,4 @@
-
+package provide workouts 1.0
 
 package require sqlite3
 
@@ -7,8 +7,6 @@ namespace eval ::workouts {
 
     namespace export initDb
 
-
-}
     proc initDb path {
         sqlite db $path
         db eval {
@@ -28,4 +26,5 @@ namespace eval ::workouts {
         }
     }
 
-package provide workouts 1.0
+}
+

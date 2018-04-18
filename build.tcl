@@ -45,5 +45,6 @@ proc UpdateIndex {dir} {
 # Call our proc.
 Libraries {
     workouts
+    interactive
 }
 
