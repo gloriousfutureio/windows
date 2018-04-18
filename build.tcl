@@ -2,8 +2,13 @@
 
 # Build our package index files, etc.
 
+
+puts "this doesn't actually work yet so we are maintaining pkgIndex.tcl by hand"
+exit 1
+
 proc Libraries {libs} {
     foreach lib $libs {
+        puts "building lib $lib"
         UpdateIndex [file join "lib/$lib"]
     }
 }
@@ -28,14 +33,17 @@ proc UpdateIndex {dir} {
             }
         }
     }
+    puts "the dir: $dir, the bool: $doit"
+
     if { $doit } {
         # Rebuild the tclIndex 
+        puts "doin it"
         pkg_mkIndex $dir *.tcl
     }
 }
 
 # Call our proc.
 Libraries {
-    example
+    workouts
 }
 

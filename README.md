@@ -57,4 +57,13 @@ command history. To become a cool person, clone and compile `rlwrap`, and invoke
 your shells like `rlwrap tclsh`
 
 
+## Getting more sweet packages
+
+You will probably need to use your system package manager. On Arch, search
+the official repositories like
+
+```
+pacman -Ss sqlite | grep tcl
+```
+
 
