@@ -38,7 +38,8 @@ indexing command in Tcl.
 pkg_mkIndex /some/lib *.tcl
 ```
 
-Our build script can do this for us.
+Our build script ~~can do this for us~~ is broken, so we must write pkgIndex.tcl
+files by hand for each custom library.
 
 ## Interactive commands
 
