@@ -1,6 +1,7 @@
 #!/usr/bin/env tclsh
 #
 #
+
 package require sqlite3
 lappend auto_path [file join [file dirname [info script]] "../lib/workouts" ]
 
