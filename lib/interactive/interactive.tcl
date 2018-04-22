@@ -1,5 +1,5 @@
-
 package provide interactive
+
 
 namespace eval ::interactive {
 
@@ -12,7 +12,8 @@ namespace eval ::interactive {
         exec $::env(EDITOR) $path <@ stdin >@ stdout 2>@ stderr
         set f [open $path r]
         set out [read $f]
-        return $out
+        #return $out
+        #shouldn't need this
     }
 
 }
