@@ -3,8 +3,6 @@ package provide workouts 1.0
 package require sqlite3
 
 proc workout {w} {
-    # This would work, but it's not nice:
-    # lappend ::workouts::tempAlias $w
     ::workouts::addCommand $w
     interp alias {} $w {} ::workouts
     return
@@ -17,26 +15,65 @@ namespace eval ::workouts {
     variable tempAlias {}
     variable val 1
 
-    # We will treat data as a list of dict
+    # We will treat data as a list of dict (list of exercises)
     variable data {}
     variable workoutMeta {}
 
-    namespace export initDb help commit curls
+    namespace export initDb help commit curls start finish band squats pushups
     namespace export debug 
     namespace ensemble create
 
+    proc minargs {msg num args} {
+        if {[llength args] >= $num} {
+            error $msg
+        }
+    }
+
     proc curls {reps lbs args} {
         variable data
-        if {[llength args] > 1} {
-            set usage "provide either 2 or 3 arguments (curls {reps lbs args})"
-            error $usage
-        }
-
         # create a dictonary from our args
         set d [dict create name curls weight_lbs $lbs reps $reps]
-
-        # append our dictionary values
         lappend data $d
+    }
+
+    proc band {type reps} {
+        #variable data
+        set valid [list frontraise curls flys rows]
+        if {[lsearch -exact $valid $type] == -1} {
+            error "valid band types: $valid"
+        }
+        #set d [dict create name "bands_$type" reps $reps]
+        #lappend data $d
+        repExercise "bands_$type" $reps
+    }
+
+    proc repExercise {name reps} {
+        variable data
+        set d [dict create name $name reps $reps]
+        lappend data $d
+    }
+
+    proc pushups {reps} {
+        repExercise pushups $reps
+    }
+
+    proc squats {reps} {
+        repExercise squats $reps
+    }
+
+
+    # If we are entering in a workout from the gym later, only the end time
+    # will be set. But if we are doing a working in our home, we can call start
+    # to set the start time.
+
+    proc start {} {
+        variable workoutMeta
+        dict set workoutMeta start [clock seconds]
+    }
+
+    proc finish {} {
+        variable workoutMeta
+        dict set workoutMeta end [clock seconds]
     }
 
     proc commit {} {
@@ -45,6 +82,31 @@ namespace eval ::workouts {
 
         # remove the symbol passed to workout from interpreter
         interp alias {} [lindex $tempAlias 0] {}
+
+        # commit to db
+        sqlite db "~/.config/workouts.db"
+        db nullvalue NULL
+        initDb db
+
+        # Create a new workout
+        set defaultCols [dict create start NULL end NULL]
+
+        set now [clock seconds]
+        set defaultCols [
+           dict create name NULL weight_lbs NULL reps NULL duration NULL created $now
+        ]  
+
+        foreach {item} $data { 
+            # with duplicate keys, merge takes the latter dictionaries passed
+            set record [dict merge $defaultCols $item]
+            dict with record {
+                db eval {
+                    INSERT INTO exercises (name, weight_lbs, reps, duration_sec, created) 
+                        VALUES ($name, $weight_lbs, $reps, $duration, datetime('$created', 'unix', 'utc'))
+                }
+            }
+        }
+        db close
 
         # empty our namespace data
         set data {}
@@ -82,13 +144,14 @@ namespace eval ::workouts {
         puts "w commit          # add to database"
     }
 
-    proc initDb path {
-        sqlite db $path
+    proc initDb db {
+        # no trailing commas allowed
         db eval {
             CREATE TABLE IF NOT EXISTS workouts (
                 id INTEGER PRIMARY KEY,
                 start DATETIME,
-                end DATETIME
+                end DATETIME,
+                created DATETIME
             )
         }
         db eval {
@@ -98,11 +161,10 @@ namespace eval ::workouts {
                 weight_lbs NUMERIC,
                 reps NUMERIC,
                 duration_sec NUMERIC,
+                created DATETIME
             )
         }
-        db close
     }
-
 
 }
 

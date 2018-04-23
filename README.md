@@ -76,4 +76,7 @@ the official repositories like
 pacman -Ss sqlite | grep tcl
 ```
 
+## Misc
+
+* [some info on dictionaries](https://stackoverflow.com/questions/25814950/create-list-of-dicts-within-a-dict-in-tcl) 
 
